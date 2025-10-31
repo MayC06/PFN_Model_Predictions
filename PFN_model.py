@@ -627,7 +627,7 @@ def PC_response_de(params, inputs, initcond):
     # full tau expression, res[0] is the initial result (assumed to be the
     # steady state if the first timestep inputs were held constant).
     C = np.multiply(a, np.multiply((1 - np.exp(np.multiply(c, -speedvec))), (np.cos(thetavec - prefdir) + b)))
-    T = tau + np.multiply(tauslope, np.exp(speedvec / 100))
+    T = tau + np.multiply(tauslope, np.exp(-speedvec))
     res = np.zeros_like(t)
 
     res[0] = initcond
@@ -648,8 +648,8 @@ def PC_response_de(params, inputs, initcond):
     # Handle negative values for AF response curves.
     for i in range(len(t)):
         if flip[i] != 0:
-            #res[i] = np.abs(C[i] - res[i])
-            res[i] = C[i]-res[i]
+            res[i] = np.abs(C[i] - res[i])
+            #res[i] = C[i]-res[i]
             r[i] = r[i]
 
     return res, r
